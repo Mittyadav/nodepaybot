@@ -88,7 +88,7 @@ CARGO_BUILD_TARGET="$(rustc -Vv | grep "host" | awk '{print $2}')" pip install m
 pkg install git
 ```
 ```
-git clone https://github.com/ashtrobe/nodepay-farm.git
+git clone https://github.com/Mittyadav/nodepaybot.git
 ```
 ## Install Requirements
 ```
