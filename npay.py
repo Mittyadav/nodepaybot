@@ -35,13 +35,12 @@ last_ping_time = {}
 def uuidv4():
     return str(uuid.uuid4())
 
-# Function to show the banner with 7 colors
 def show_banner():
-    colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN, Fore.MAGENTA, Fore.BLUE, Fore.WHITE]
-    colored_banner = ""
-    for i, line in enumerate(banner.splitlines()):
-        colored_banner += colors[i % len(colors)] + line + Style.RESET_ALL + "\n"
-    print(colored_banner)
+    banner = """Your custom multi-color banner here"""
+    print(Fore.MAGENTA + banner + Style.RESET_ALL)
+
+def show_copyright():
+    print(Fore.MAGENTA + Style.BRIGHT + banner + Style.RESET_ALL)
 
 def valid_resp(resp):
     if not resp or "code" not in resp or resp["code"] < 0:
@@ -150,8 +149,8 @@ async def ping(proxy, token):
 
         response = await call_api(DOMAIN_API["PING"], data, proxy, token)
         if response["code"] == 0:
-            # IP score will be in Sky Blue, Ping successful in Green, and time in Gray
-            log_message(f"Ping SUCCESSFUL for {proxy} - IP Score {Fore.CYAN}{response['data']['ip_score']}{Style.RESET_ALL}", Fore.GREEN)  
+            # Only the "Ping SUCCESSFUL" part will be in Green, the rest will remain normal
+            log_message(f"{Fore.GREEN}Ping SUCCESSFUL{Style.RESET_ALL} for {proxy} - IP Score {Fore.CYAN}{response['data']['ip_score']}{Style.RESET_ALL}", Fore.GREEN)
             RETRIES = 0
             status_connect = CONNECTION_STATES["CONNECTED"]
         else:
@@ -170,7 +169,8 @@ async def call_api(url, data, proxy, token):
     }
 
     try:
-        response = requests.post(url, json=data, headers=headers, impersonate="safari15_5", proxies={ "http": proxy, "https": proxy}, timeout=15)
+        response = requests.post(url, json=data, headers=headers, impersonate="safari15_5", proxies={
+            "http": proxy, "https": proxy}, timeout=15)
 
         response.raise_for_status()
         return valid_resp(response.json())
