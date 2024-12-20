@@ -35,11 +35,15 @@ last_ping_time = {}
 def uuidv4():
     return str(uuid.uuid4())
 
-def show_banner():
-    print(Fore.MAGENTA + banner + Style.RESET_ALL)
+def print_header():
+    ascii_art = figlet_format("NodepayBot", font="slant")
+    colored_art = colored(ascii_art, color="cyan")
+    border = "=" * 40
 
-def show_copyright():
-    print(Fore.MAGENTA + Style.BRIGHT + banner + Style.RESET_ALL)
+    print(border)
+    print(colored_art)
+    print(colored("by dark life", color="cyan", attrs=["bold"]))
+    print("\nWelcome to NodepayBot - Automate your tasks effortlessly!")
 
 def valid_resp(resp):
     if not resp or "code" not in resp or resp["code"] < 0:
@@ -98,6 +102,13 @@ def dailyclaim(token):
         log_message(f"Error in dailyclaim: {e}", Fore.RED)
         return False
 
+def handle_ping_result(proxy, success, ip_score=None, error_code=None):
+    """Handles ping results with appropriate colors and messages."""
+    if success:
+        log_message(f"Ping SUCCESSFUL for {proxy} - IP Score {ip_score}", Fore.GREEN)
+    else:
+        log_message(f"Ping FAILED for {proxy} - Error Code {error_code}", Fore.RED)
+
 def is_valid_proxy(proxy):
     return True
 
@@ -148,10 +159,11 @@ async def ping(proxy, token):
 
         response = await call_api(DOMAIN_API["PING"], data, proxy, token)
         if response["code"] == 0:
-            log_message(f"Ping SUCCESSFUL for {proxy} - IP Score {response['data']['ip_score']}", Fore.GREEN)
+            handle_ping_result(proxy, success=True, ip_score=response['data']['ip_score'])
             RETRIES = 0
             status_connect = CONNECTION_STATES["CONNECTED"]
         else:
+            handle_ping_result(proxy, success=False, error_code=response["code"])
             handle_ping_fail(proxy, response)
     except Exception as e:
         log_message(f"Ping failed via proxy {proxy}: {e}", Fore.RED)
@@ -197,17 +209,7 @@ async def render_profile_info(proxy, token):
             await start_ping(proxy, token)
     except Exception as e:
         log_message(f"Error in render_profile_info for proxy {proxy}: {e}", Fore.RED)
-        error_message = str(e)
-        if any(phrase in error_message for phrase in [
-            "sent 1011 (internal error) keepalive ping timeout; no close frame received",
-            "500 Internal Server Error"
-        ]):
-            log_message(f"Removing error proxy from the list: {proxy}", Fore.RED)
-            remove_proxy_from_list(proxy)
-            return None
-        else:
-            log_message(f"Connection error: {e}", Fore.RED)
-            return proxy
+        return proxy
 
 async def main():
     all_proxies = load_proxies(PROXY_FILE)
@@ -258,8 +260,7 @@ def log_message(message, color):
     print(color + f"[{timestamp}] {message}" + Style.RESET_ALL)
 
 if __name__ == '__main__':
-    show_copyright()
-    log_message("RUNNING WITH PROXIES", Fore.WHITE)
+    show_banner_and_status()
     try:
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
