@@ -7,6 +7,8 @@ from loguru import logger
 from fake_useragent import UserAgent
 from colorama import Fore, Style, init
 from datetime import datetime
+from pyfiglet import figlet_format  # Added this import
+from termcolor import colored  # Added this import
 
 init()
 
@@ -34,30 +36,16 @@ last_ping_time = {}
 def uuidv4():
     return str(uuid.uuid4())
 
-def show_banner():
-    # Define your banner with custom colors
-    banner = """
- -================= ≫ ──── ≪•◦ ❈ ◦•≫ ──── ≪=================- 
- │                                                          │
- │  ██████╗  █████╗ ██████╗ ██╗  ██╗                        │
- │  ██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝                        │
- │  ██║  ██║███████║██████╔╝█████╔╝                         │
- │  ██║  ██║██╔══██║██╔══██╗██╔═██╗                         │
- │  ██████╔╝██║  ██║██║  ██║██║  ██╗                        │
- │  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝                        │
- │                                                          │
- │                                                          │
- ╰─━━━━━━━━━━━━━━━━━━━━━━━━Termux-os━━━━━━━━━━━━━━━━━━━━━━━─╯
- made by dark life || Join telegram @scripthub00
+def print_header():
+    ascii_art = figlet_format("NodepayBot", font="slant")
+    colored_art = colored(ascii_art, color="cyan")
+    border = "=" * 40
 
-NODEPAY FARMING
-USE AT YOUR OWN RISK!
-    """.format(
-        Fore.MAGENTA, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
-        Fore.RED, Fore.BLUE, Fore.MAGENTA
-    )
-    print(banner)
-
+    print(border)
+    print(colored_art)
+    print(colored("by dark life", color="cyan", attrs=["bold"]))
+    print("\nWelcome to NodepayBot - Automate your tasks effortlessly!")
+    
 def log_message(message, color):
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print(color + f"[{timestamp}] {message}" + Style.RESET_ALL)
@@ -284,7 +272,7 @@ async def main():
     await asyncio.sleep(10)
 
 if __name__ == '__main__':
-    show_banner()  # Display the banner with multicolors
+    print_header()  # Now calling the correct function
     log_message("RUNNING WITH PROXIES", Fore.WHITE)
     try:
         asyncio.run(main())
