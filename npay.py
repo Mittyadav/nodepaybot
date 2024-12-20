@@ -37,7 +37,7 @@ def uuidv4():
 def show_banner():
     # Define your banner with custom colors
     banner = """
- -================= ≫ ──── ≪•◦ ❈ ◦•≫ ──── ≪=================-
+ -================= ≫ ──── ≪•◦ ❈ ◦•≫ ──── ≪=================- 
  │                                                          │
  │  ██████╗  █████╗ ██████╗ ██╗  ██╗                        │
  │  ██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝                        │
@@ -52,18 +52,15 @@ def show_banner():
 
 NODEPAY FARMING
 USE AT YOUR OWN RISK!
-
     """.format(
-        Fore.MAGENTA, Fore.RESET,
-        Fore.GREEN, Fore.RESET,
-        Fore.YELLOW, Fore.RESET,
-        Fore.CYAN, Fore.RESET,
-        Fore.MAGENTA, Fore.RESET
+        Fore.MAGENTA, Fore.GREEN, Fore.YELLOW, Fore.CYAN,
+        Fore.RED, Fore.BLUE, Fore.MAGENTA
     )
     print(banner)
 
-def show_copyright():
-    print(Fore.MAGENTA + Style.BRIGHT + banner + Style.RESET_ALL)
+def log_message(message, color):
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    print(color + f"[{timestamp}] {message}" + Style.RESET_ALL)
 
 def valid_resp(resp):
     if not resp or "code" not in resp or resp["code"] < 0:
@@ -172,8 +169,16 @@ async def ping(proxy, token):
 
         response = await call_api(DOMAIN_API["PING"], data, proxy, token)
         if response["code"] == 0:
-            # Change IP score word to Sky Blue
-            log_message(f"{Fore.GREEN}Ping SUCCESSFUL{Style.RESET_ALL} for {proxy} - IP Score {Fore.CYAN}{response['data']['ip_score']}{Style.RESET_ALL}", Fore.GREEN)
+            # Change IP score color dynamically based on value
+            ip_score = response['data']['ip_score']
+            if ip_score > 80:
+                ip_color = Fore.GREEN
+            elif ip_score > 50:
+                ip_color = Fore.YELLOW
+            else:
+                ip_color = Fore.RED
+
+            log_message(f"{Fore.GREEN}Ping SUCCESSFUL{Style.RESET_ALL} for {proxy} - IP Score {ip_color}{ip_score}{Style.RESET_ALL}", Fore.GREEN)
             RETRIES = 0
             status_connect = CONNECTION_STATES["CONNECTED"]
         else:
@@ -277,10 +282,6 @@ async def main():
                 tasks[new_task] = proxy
             await asyncio.sleep(3)
     await asyncio.sleep(10)
-
-def log_message(message, color):
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print(color + f"[{timestamp}] {message}" + Style.RESET_ALL)
 
 if __name__ == '__main__':
     show_banner()  # Display the banner with multicolors
