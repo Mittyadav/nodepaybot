@@ -35,8 +35,20 @@ def uuidv4():
     return str(uuid.uuid4())
 
 def show_banner():
-    banner = """Your custom banner here with multicolor if needed"""
-    print(Fore.MAGENTA + banner + Style.RESET_ALL)
+    # Define your banner with custom colors
+    banner = """
+    {}###########################{}###########################
+    {}## {}Banner Section 1{} ## {}Banner Section 2{}  ##
+    {}## {}Banner Section 3{} ## {}Banner Section 4{}  ##
+    {}###########################{}###########################
+    """.format(
+        Fore.MAGENTA, Fore.RESET,
+        Fore.GREEN, Fore.RESET,
+        Fore.YELLOW, Fore.RESET,
+        Fore.CYAN, Fore.RESET,
+        Fore.MAGENTA, Fore.RESET
+    )
+    print(banner)
 
 def show_copyright():
     print(Fore.MAGENTA + Style.BRIGHT + banner + Style.RESET_ALL)
@@ -148,8 +160,8 @@ async def ping(proxy, token):
 
         response = await call_api(DOMAIN_API["PING"], data, proxy, token)
         if response["code"] == 0:
-            # "Ping SUCCESSFUL" will remain in Green, IP score in Pink
-            log_message(f"{Fore.GREEN}Ping SUCCESSFUL{Style.RESET_ALL} for {proxy} - IP Score {Fore.MAGENTA}{response['data']['ip_score']}{Style.RESET_ALL}", Fore.GREEN)
+            # Change IP score word to Sky Blue
+            log_message(f"{Fore.GREEN}Ping SUCCESSFUL{Style.RESET_ALL} for {proxy} - IP Score {Fore.CYAN}{response['data']['ip_score']}{Style.RESET_ALL}", Fore.GREEN)
             RETRIES = 0
             status_connect = CONNECTION_STATES["CONNECTED"]
         else:
@@ -168,7 +180,7 @@ async def call_api(url, data, proxy, token):
     }
 
     try:
-        response = requests.post(url, json=data, headers=headers, impersonate="safari15_5", proxies={
+        response = requests.post(url, json=data, headers=headers, impersonate="safari15_5", proxies={ 
             "http": proxy, "https": proxy}, timeout=15)
 
         response.raise_for_status()
@@ -259,7 +271,7 @@ def log_message(message, color):
     print(color + f"[{timestamp}] {message}" + Style.RESET_ALL)
 
 if __name__ == '__main__':
-    show_banner()
+    show_banner()  # Display the banner with multicolors
     log_message("RUNNING WITH PROXIES", Fore.WHITE)
     try:
         asyncio.run(main())
