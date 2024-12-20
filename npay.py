@@ -5,7 +5,6 @@ import uuid
 from curl_cffi import requests
 from loguru import logger
 from fake_useragent import UserAgent
-from utils.banner import banner
 from colorama import Fore, Style, init
 from datetime import datetime
 
@@ -36,7 +35,7 @@ def uuidv4():
     return str(uuid.uuid4())
 
 def show_banner():
-    banner = """Your custom multi-color banner here"""
+    banner = """Your custom banner here with multicolor if needed"""
     print(Fore.MAGENTA + banner + Style.RESET_ALL)
 
 def show_copyright():
@@ -149,8 +148,8 @@ async def ping(proxy, token):
 
         response = await call_api(DOMAIN_API["PING"], data, proxy, token)
         if response["code"] == 0:
-            # Only the "Ping SUCCESSFUL" part will be in Green, the rest will remain normal
-            log_message(f"{Fore.GREEN}Ping SUCCESSFUL{Style.RESET_ALL} for {proxy} - IP Score {Fore.CYAN}{response['data']['ip_score']}{Style.RESET_ALL}", Fore.GREEN)
+            # "Ping SUCCESSFUL" will remain in Green, IP score in Pink
+            log_message(f"{Fore.GREEN}Ping SUCCESSFUL{Style.RESET_ALL} for {proxy} - IP Score {Fore.MAGENTA}{response['data']['ip_score']}{Style.RESET_ALL}", Fore.GREEN)
             RETRIES = 0
             status_connect = CONNECTION_STATES["CONNECTED"]
         else:
