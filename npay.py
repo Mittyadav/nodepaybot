@@ -32,14 +32,28 @@ browser_id = None
 account_info = {}
 last_ping_time = {}
 
+# Setup logger
+logger.remove()
+logger.add(
+    sink=sys.stdout,
+    format="<r>[Nodepay]</r> | <white>{time:YYYY-MM-DD HH:mm:ss}</white> | "
+           "<level>{level: ^7}</level> | <cyan>{line: <3}</cyan> | {message}",
+    colorize=True
+)
+logger = logger.opt(colors=True)
+
+def print_header():
+    ascii_art = figlet_format("NodepayBot", font="slant")
+    colored_art = colored(ascii_art, color="cyan")
+    border = "=" * 40
+
+    print(border)
+    print(colored_art)
+    print(colored("by dark life", color="cyan", attrs=["bold"]))
+    print("\nWelcome to NodepayBot - Automate your tasks effortlessly!")
+
 def uuidv4():
     return str(uuid.uuid4())
-
-def show_banner():
-    print(Fore.MAGENTA + banner + Style.RESET_ALL)
-
-def show_copyright():
-    print(Fore.MAGENTA + Style.BRIGHT + banner + Style.RESET_ALL)
 
 def valid_resp(resp):
     if not resp or "code" not in resp or resp["code"] < 0:
