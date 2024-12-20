@@ -7,7 +7,8 @@ from loguru import logger
 from fake_useragent import UserAgent
 from colorama import Fore, Style, init
 from datetime import datetime
-from pyfiglet import figlet_format  # Import figlet_format from pyfiglet
+from pyfiglet import figlet_format
+from termcolor import colored
 
 init()
 
@@ -47,9 +48,7 @@ def print_header():
 
 def log_message(message, color):
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    # Set datetime color to light cyan (sky-blue alternative)
-    datetime_color = Fore.CYAN  # You can also use Fore.LIGHTCYAN_EX for a lighter shade
-    print(f"{datetime_color}[{timestamp}]{Style.RESET_ALL} {color}{message}{Style.RESET_ALL}")
+    print(color + f"[{timestamp}] {message}" + Style.RESET_ALL)
 
 def valid_resp(resp):
     if not resp or "code" not in resp or resp["code"] < 0:
@@ -158,7 +157,6 @@ async def ping(proxy, token):
 
         response = await call_api(DOMAIN_API["PING"], data, proxy, token)
         if response["code"] == 0:
-            # Change IP score color dynamically based on value
             ip_score = response['data']['ip_score']
             if ip_score > 80:
                 ip_color = Fore.GREEN
