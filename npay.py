@@ -2,7 +2,6 @@ import requests as reqs
 import asyncio
 import time
 import uuid
-import sys
 from curl_cffi import requests
 from loguru import logger
 from fake_useragent import UserAgent
@@ -33,27 +32,14 @@ browser_id = None
 account_info = {}
 last_ping_time = {}
 
-# Setup logger
-logger.remove()
-logger.add(
-    sink=sys.stdout,
-    format="<r>[Nodepay]</r> | <white>{time:YYYY-MM-DD HH:mm:ss}</white> | "
-           "<level>{level: ^7}</level> | <cyan>{line: <3}</cyan> | {message}",
-    colorize=True
-)
-logger = logger.opt(colors=True)
-
-def print_header():
-    ascii_art = banner()
-    border = "=" * 40
-
-    print(border)
-    print(Fore.CYAN + ascii_art + Style.RESET_ALL)
-    print(Fore.CYAN + "by dark life" + Style.RESET_ALL)
-    print("\nWelcome to NodepayBot - Automate your tasks effortlessly!")
-
 def uuidv4():
     return str(uuid.uuid4())
+
+def show_banner():
+    print(Fore.MAGENTA + banner + Style.RESET_ALL)
+
+def show_copyright():
+    print(Fore.MAGENTA + Style.BRIGHT + banner + Style.RESET_ALL)
 
 def valid_resp(resp):
     if not resp or "code" not in resp or resp["code"] < 0:
@@ -82,7 +68,7 @@ def dailyclaim(token):
     url = DOMAIN_API["DAILY_CLAIM"]
     headers = {
         "Authorization": f"Bearer {token}",
-        "User-Agent": UserAgent().random,
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
         "Content-Type": "application/json",
         "Origin": "https://app.nodepay.ai",
         "Referer": "https://app.nodepay.ai/",
@@ -91,7 +77,9 @@ def dailyclaim(token):
         "Connection": "keep-alive",
         "Upgrade-Insecure-Requests": "1"
     }
-    data = {"mission_id": "1"}
+    data = {
+        "mission_id": "1"
+    }
 
     try:
         response = requests.post(url, headers=headers, json=data, timeout=15)
@@ -270,7 +258,7 @@ def log_message(message, color):
     print(color + f"[{timestamp}] {message}" + Style.RESET_ALL)
 
 if __name__ == '__main__':
-    print_header()
+    show_copyright()
     log_message("RUNNING WITH PROXIES", Fore.WHITE)
     try:
         asyncio.run(main())
