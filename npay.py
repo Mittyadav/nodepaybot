@@ -38,9 +38,6 @@ def uuidv4():
 def show_banner():
     print(Fore.MAGENTA + banner + Style.RESET_ALL)
 
-def show_copyright():
-    print(Fore.MAGENTA + Style.BRIGHT + banner + Style.RESET_ALL)
-
 def valid_resp(resp):
     if not resp or "code" not in resp or resp["code"] < 0:
         raise ValueError("Invalid response")
@@ -148,7 +145,7 @@ async def ping(proxy, token):
 
         response = await call_api(DOMAIN_API["PING"], data, proxy, token)
         if response["code"] == 0:
-            log_message(f"Ping SUCCESSFUL for {proxy} - IP Score {response['data']['ip_score']}", Fore.MAGENTA)  # Changed color to pink
+            log_message(f"Ping SUCCESSFUL for {proxy} - IP Score {response['data']['ip_score']}", Fore.MAGENTA)  # Ping success color changed to magenta
             RETRIES = 0
             status_connect = CONNECTION_STATES["CONNECTED"]
         else:
@@ -257,7 +254,7 @@ def log_message(message, color):
     print(color + f"[{timestamp}] {message}" + Style.RESET_ALL)
 
 if __name__ == '__main__':
-    show_copyright()
+    show_banner()
     log_message("RUNNING WITH PROXIES", Fore.WHITE)
     try:
         asyncio.run(main())
