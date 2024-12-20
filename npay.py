@@ -148,8 +148,8 @@ async def ping(proxy, token):
 
         response = await call_api(DOMAIN_API["PING"], data, proxy, token)
         if response["code"] == 0:
-            # "Ping SUCCESSFUL" will remain in Green, IP score in Pink
-            log_message(f"{Fore.GREEN}Ping SUCCESSFUL{Style.RESET_ALL} for {proxy} - IP Score {Fore.MAGENTA}{response['data']['ip_score']}{Style.RESET_ALL}", Fore.GREEN)
+            # "Ping SUCCESSFUL" will remain Green
+            log_message(f"{Fore.GREEN}Ping SUCCESSFUL{Style.RESET_ALL} for {proxy} - IP Score {Fore.CYAN}{response['data']['ip_score']}{Style.RESET_ALL} - Last Ping Time {Fore.GRAY}{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(current_time))}{Style.RESET_ALL}", Fore.GREEN)
             RETRIES = 0
             status_connect = CONNECTION_STATES["CONNECTED"]
         else:
