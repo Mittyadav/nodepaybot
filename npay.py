@@ -37,10 +37,22 @@ def uuidv4():
 def show_banner():
     # Define your banner with custom colors
     banner = """
-    {}###########################{}###########################
-    {}## {}Banner Section 1{} ## {}Banner Section 2{}  ##
-    {}## {}Banner Section 3{} ## {}Banner Section 4{}  ##
-    {}###########################{}###########################
+ -================= ≫ ──── ≪•◦ ❈ ◦•≫ ──── ≪=================-
+ │                                                          │
+ │  ██████╗  █████╗ ██████╗ ██╗  ██╗                        │
+ │  ██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝                        │
+ │  ██║  ██║███████║██████╔╝█████╔╝                         │
+ │  ██║  ██║██╔══██║██╔══██╗██╔═██╗                         │
+ │  ██████╔╝██║  ██║██║  ██║██║  ██╗                        │
+ │  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝                        │
+ │                                                          │
+ │                                                          │
+ ╰─━━━━━━━━━━━━━━━━━━━━━━━━Termux-os━━━━━━━━━━━━━━━━━━━━━━━─╯
+ made by dark life || Join telegram @scripthub00
+
+NODEPAY FARMING
+USE AT YOUR OWN RISK!
+
     """.format(
         Fore.MAGENTA, Fore.RESET,
         Fore.GREEN, Fore.RESET,
