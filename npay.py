@@ -35,8 +35,13 @@ last_ping_time = {}
 def uuidv4():
     return str(uuid.uuid4())
 
+# Function to show the banner with 7 colors
 def show_banner():
-    print(Fore.MAGENTA + banner + Style.RESET_ALL)
+    colors = [Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.CYAN, Fore.MAGENTA, Fore.BLUE, Fore.WHITE]
+    colored_banner = ""
+    for i, line in enumerate(banner.splitlines()):
+        colored_banner += colors[i % len(colors)] + line + Style.RESET_ALL + "\n"
+    print(colored_banner)
 
 def valid_resp(resp):
     if not resp or "code" not in resp or resp["code"] < 0:
@@ -145,7 +150,7 @@ async def ping(proxy, token):
 
         response = await call_api(DOMAIN_API["PING"], data, proxy, token)
         if response["code"] == 0:
-            log_message(f"Ping SUCCESSFUL for {proxy} - IP Score {response['data']['ip_score']}", Fore.MAGENTA)  # Ping success color changed to magenta
+            log_message(f"Ping SUCCESSFUL for {proxy} - IP Score {response['data']['ip_score']}", Fore.CYAN)  # Sky Blue color for success
             RETRIES = 0
             status_connect = CONNECTION_STATES["CONNECTED"]
         else:
