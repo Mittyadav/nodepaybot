@@ -2,6 +2,7 @@ import requests as reqs
 import asyncio
 import time
 import uuid
+import sys
 from curl_cffi import requests
 from loguru import logger
 from fake_useragent import UserAgent
@@ -43,13 +44,12 @@ logger.add(
 logger = logger.opt(colors=True)
 
 def print_header():
-    ascii_art = figlet_format("NodepayBot", font="slant")
-    colored_art = colored(ascii_art, color="cyan")
+    ascii_art = banner()
     border = "=" * 40
 
     print(border)
-    print(colored_art)
-    print(colored("by dark life", color="cyan", attrs=["bold"]))
+    print(Fore.CYAN + ascii_art + Style.RESET_ALL)
+    print(Fore.CYAN + "by dark life" + Style.RESET_ALL)
     print("\nWelcome to NodepayBot - Automate your tasks effortlessly!")
 
 def uuidv4():
@@ -82,7 +82,7 @@ def dailyclaim(token):
     url = DOMAIN_API["DAILY_CLAIM"]
     headers = {
         "Authorization": f"Bearer {token}",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
+        "User-Agent": UserAgent().random,
         "Content-Type": "application/json",
         "Origin": "https://app.nodepay.ai",
         "Referer": "https://app.nodepay.ai/",
@@ -91,9 +91,7 @@ def dailyclaim(token):
         "Connection": "keep-alive",
         "Upgrade-Insecure-Requests": "1"
     }
-    data = {
-        "mission_id": "1"
-    }
+    data = {"mission_id": "1"}
 
     try:
         response = requests.post(url, headers=headers, json=data, timeout=15)
@@ -272,7 +270,7 @@ def log_message(message, color):
     print(color + f"[{timestamp}] {message}" + Style.RESET_ALL)
 
 if __name__ == '__main__':
-    show_copyright()
+    print_header()
     log_message("RUNNING WITH PROXIES", Fore.WHITE)
     try:
         asyncio.run(main())
