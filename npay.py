@@ -37,7 +37,7 @@ def uuidv4():
     return str(uuid.uuid4())
 
 def print_header():
-    ascii_art = figlet_format("NodepayBot", font="slant")
+    ascii_art = figlet_format("NODEPAYBOT V.2", font="slant")
     colored_art = colored(ascii_art, color="cyan")
     border = "=" * 40
 
