@@ -7,8 +7,6 @@ from loguru import logger
 from fake_useragent import UserAgent
 from colorama import Fore, Style, init
 from datetime import datetime
-from pyfiglet import figlet_format  # Added this import
-from termcolor import colored  # Added this import
 
 init()
 
@@ -48,7 +46,9 @@ def print_header():
     
 def log_message(message, color):
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print(color + f"[{timestamp}] {message}" + Style.RESET_ALL)
+    # Set datetime color to light cyan (sky-blue alternative)
+    datetime_color = Fore.CYAN  # You can also use Fore.LIGHTCYAN_EX for a lighter shade
+    print(f"{datetime_color}[{timestamp}]{Style.RESET_ALL} {color}{message}{Style.RESET_ALL}")
 
 def valid_resp(resp):
     if not resp or "code" not in resp or resp["code"] < 0:
@@ -272,7 +272,7 @@ async def main():
     await asyncio.sleep(10)
 
 if __name__ == '__main__':
-    print_header()  # Now calling the correct function
+    print_header()  # Display the banner with multicolors
     log_message("RUNNING WITH PROXIES", Fore.WHITE)
     try:
         asyncio.run(main())
