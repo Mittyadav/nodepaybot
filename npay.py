@@ -7,6 +7,7 @@ from loguru import logger
 from fake_useragent import UserAgent
 from colorama import Fore, Style, init
 from datetime import datetime
+from pyfiglet import figlet_format  # Import figlet_format from pyfiglet
 
 init()
 
@@ -43,7 +44,7 @@ def print_header():
     print(colored_art)
     print(colored("by dark life", color="cyan", attrs=["bold"]))
     print("\nWelcome to NodepayBot - Automate your tasks effortlessly!")
-    
+
 def log_message(message, color):
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     # Set datetime color to light cyan (sky-blue alternative)
